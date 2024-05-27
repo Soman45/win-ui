@@ -23,12 +23,19 @@ const RegisterPage = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    if (!emailRegex.test(formData.email)) {
+      setError('Format email tidak valid');
+      return;
+    }
+    setLoading(true);
     try {
       await registerUser(formData);
       router.push('/login');
     } catch (err) {
       setError('Registration failed');
     }
+    setLoading(false);
   };
 
   return (

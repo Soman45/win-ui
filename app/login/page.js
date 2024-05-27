@@ -21,7 +21,6 @@ const LoginPage = () => {
       setError('Semua kolom harus diisi');
       return;
     }
-
     setLoading(true);
     try {
       await login(userData.email, userData.password);
@@ -29,7 +28,9 @@ const LoginPage = () => {
       const redirectPath = router.query.redirect || '/'; 
       router.push(redirectPath);
     } catch (err) {
-      setError('Email/Password salah');
+      setTimeout(() => {
+        setError('Email/Password salah');
+      }, 5000);
     }
     setLoading(false);
   };
