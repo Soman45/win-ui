@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthContext from './Auth';
 
-const ProtectedRoute = (WrappedComponent) => {
-  return (props) => {
+const ProtectedPage = (WrappedComponent) => {
+  const Wrapper = (props) => {
     const { user } = useContext(AuthContext);
     const router = useRouter();
 
@@ -15,6 +15,10 @@ const ProtectedRoute = (WrappedComponent) => {
 
     return user ? <WrappedComponent {...props} /> : null;
   };
+
+  Wrapper.displayName = `ProtectedPage(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+
+  return Wrapper;
 };
 
-export default ProtectedRoute;
+export default ProtectedPage;

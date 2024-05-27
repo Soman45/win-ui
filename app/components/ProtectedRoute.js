@@ -14,10 +14,12 @@ const ProtectedRoute = ({ children }) => {
   }, [user, router]);
 
   if (!user) {
-    return null;
+    return <p>Silahkan Login terlebih dahulu</p>;
   }
 
   return children;
 };
+
+ProtectedRoute.displayName = 'ProtectedRoute';
 
 export default ProtectedRoute;

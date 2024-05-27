@@ -16,7 +16,7 @@ const LoginPage = () => {
   const handleLogin = async () => {
     setError('');
 
-    // Check if email or password is empty
+    // Check email/password apakah sudah diisi
     if (!userData.email || !userData.password) {
       setError('Semua kolom harus diisi');
       return;

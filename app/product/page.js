@@ -4,7 +4,7 @@ import { fetchProducts, createProduct, updateProduct, deleteProduct, fetchUserPr
 import AuthContext from '../context/Auth';
 import { formatRupiah } from '../../utils/currency';
 import {Navbar, FloatingLabel, Button } from "flowbite-react";
-import ProtectedRoute from '../context/ProtectedRoute';
+import ProtectedPage from '../context/ProtectedPage';
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -34,9 +34,8 @@ const ProductsPage = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert price to a number for validation
     const price = parseFloat(newProduct.price);
-    const maxPrice = 999999999.99; // Example max price in Rupiah, adjust as needed
+    const maxPrice = 999999999.99; 
     if (isNaN(price) || price > maxPrice) {
       setError(`Price cannot exceed ${formatRupiah(maxPrice)}`);
       return;
@@ -88,106 +87,95 @@ const ProductsPage = () => {
 
   return (
     <div className="relative min-h-screen flex flex-col">
-      <div>
-      <Navbar fluid rounded className="bg-gray-600 ">
-        <Navbar.Brand href="https://flowbite-react.com">
-            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">WIN App</span>
-          </Navbar.Brand>
-          <h1 className="self-center whitespace-nowrap text-xl font-semibold">Products</h1>
-          <Button onClick={handleLogout} className="m-3 p-2" color="blue">Logout</Button>
-          <Button onClick={loadUserProfile} className="m-3 p-2" color="blue">Lihat Profile</Button>
-        </Navbar>
-      </div>
+      <Navbar fluid rounded className="bg-gray-600">
+        <h1 className="self-center whitespace-nowrap text-xl font-semibold p-2">Products</h1>
+        <div className="ml-auto flex items-center space-x-2 p-2">
+          <Button onClick={handleLogout} className="p-2" color="blue">Logout</Button>
+          <Button onClick={loadUserProfile} className="p-2" color="blue">Lihat Profile</Button>
+        </div>
+      </Navbar>
+
       {showProfile && profile && (
         <div className="m-4 p-4 bg-white rounded-lg shadow-md">
           <h2 className="text-xl font-semibold">User Profile</h2>
           <pre>{JSON.stringify(profile, null, 2)}</pre>
         </div>
       )}
-      <form onSubmit={onSubmit}>
-      <div className="flex ">
-      <div className="bg-white p-4 rounded-lg shadow-md">
-      <h1 className="self-center whitespace-nowrap text-xl font-semibold">Add/Edit Product</h1>
-      <div className="mb-6 p-2">
-        <input
-          type="text"
-          name="name"
-          value={newProduct.name}
-          onChange={onChange}
-          placeholder="Name"
-          required
-        />
+
+      <form onSubmit={onSubmit} className="p-4 space-y-4">
+        <h1 className="text-xl font-semibold">Add/Edit Product</h1>
+        <div>
+          <input
+            type="text"
+            name="name"
+            value={newProduct.name}
+            onChange={onChange}
+            placeholder="Name"
+            required
+            className="w-full p-2 border rounded-lg mb-2"
+          />
         </div>
-        <div className="mb-6 p-2">
-        <input
-          type="text"
-          name="description"
-          value={newProduct.description}
-          onChange={onChange}
-          placeholder="Description"
-          required
-        />
+        <div>
+          <input
+            type="text"
+            name="description"
+            value={newProduct.description}
+            onChange={onChange}
+            placeholder="Description"
+            required
+            className="w-full p-2 border rounded-lg mb-2"
+          />
         </div>
-        <div className="mb-6 p-2">
-        <input
-          type="number"
-          name="price"
-          value={newProduct.price}
-          onChange={onChange}
-          placeholder="Price"
-          required
-          min="0"
-          max="999999999.99"
-          step="0.01"
-        />
+        <div>
+          <input
+            type="number"
+            name="price"
+            value={newProduct.price}
+            onChange={onChange}
+            placeholder="Price"
+            required
+            min="0"
+            max="999999999.99"
+            step="0.01"
+            className="w-full p-2 border rounded-lg mb-2"
+          />
         </div>
-        <div className="mb-6 p-2">
-        <Button type="submit">{editingProduct ? 'Update Product' : 'Add Product'}</Button>
-        </div>
-        </div>
-        </div>
+        <Button type="submit" className='p-3'>{editingProduct ? 'Update Product' : 'Add Product'}</Button>
       </form>
-      <div className="flex-grow flex">
-        <div className=" m-2 w-full bg-gray-100">
-            <table className="table-auto min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nama
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Deskripsi
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Harga
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Action
-                  </th>
-                </tr>
-              </thead>
+
+      <div className="flex-grow flex p-4">
+        <div className="w-full bg-gray-100 rounded-lg shadow-md overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deskripsi</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+              </tr>
+            </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-            {products.map((product) => (
-              <tr key={product.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{product.name}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{product.description}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{formatRupiah(product.price)}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                  <div className='flex'>
-                  <Button onClick={() => handleEdit(product)} className="m-3 p-2" color="blue">Edit</Button>
-                  <Button onClick={() => handleDelete(product.id)} className="m-3 p-2" color="blue">Delete</Button>
-                  </div>
-                </td>
+              {products.map((product) => (
+                <tr key={product.id} className="bg-white dark:border-gray-700 dark:bg-gray-800">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{product.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{product.description}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{formatRupiah(product.price)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                    <div className="flex space-x-2">
+                      <Button onClick={() => handleEdit(product)} color="blue">Edit</Button>
+                      <Button onClick={() => handleDelete(product.id)} color="blue">Delete</Button>
+                    </div>
+                  </td>
                 </tr>
-            ))}
-         </tbody>
-        </table>
-       </div>
-       </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };
 
 ProductsPage.auth = true;
 
-export default ProtectedRoute(ProductsPage);
+export default ProtectedPage(ProductsPage);

@@ -19,8 +19,19 @@ api.interceptors.request.use(
 
 export const registerUser = (userData) => api.post('/auth/register', userData);
 export const loginUser = (userData) => api.post('/auth/login', userData);
-export const fetchProducts = () => api.get('/products');
-export const createProduct = (productData) => api.post('/products', productData);
-export const updateProduct = (id, productData) => api.put(`/products/${id}`, productData);
-export const deleteProduct = (id) => api.delete(`/products/${id}`);
+export const fetchProducts = async () => {
+  return await api.get('/products');
+};
+
+export const createProduct = async (data) => {
+  return await api.post('/products', data);
+};
+
+export const updateProduct = async (id, data) => {
+  return await api.put(`/products/${id}`, data);
+};
+
+export const deleteProduct = async (id) => {
+  return await api.delete(`/products/${id}`);
+};
 export const fetchUserProfile = () => api.get('/auth/profile');
